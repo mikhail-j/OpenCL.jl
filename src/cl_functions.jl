@@ -232,10 +232,6 @@ function clSVMFree(context::cl_context, svm_pointer::Ptr{Nothing})::Nothing
     return ccall((:clSVMFree, libopencl), Nothing, (cl_context, Ptr{Nothing},), context, svm_pointer)
 end
 
-function clSVMFree(context::cl_context, svm_pointer::Ptr{Nothing})::Nothing
-    return ccall((:clSVMFree, libopencl), Nothing, (cl_context, Ptr{Nothing},), context, svm_pointer)
-end
-
 # Sampler APIs
 function clCreateSamplerWithProperties(context::cl_context, sampler_properties::Array{cl_sampler_properties, 1}, errcode_ret::Array{cl_int, 1})::cl_sampler
     return ccall((:clCreateSamplerWithProperties, libopencl), cl_sampler, (cl_context, Ref{cl_sampler_properties}, Ref{cl_int},), context, Base.cconvert(Ref{cl_sampler_properties}, sampler_properties), Base.cconvert(Ref{cl_int}, errcode_ret))
@@ -338,10 +334,6 @@ function clSetProgramSpecializationConstant(program::cl_program, spec_id::cl_uin
     return ccall((:clSetProgramSpecializationConstant, libopencl), cl_int, (cl_program, cl_uint, Csize_t, Ptr{Nothing},), program, spec_id, spec_size, spec_value)
 end
 
-function clSetProgramSpecializationConstant(program::cl_program, spec_id::cl_uint, spec_size::Csize_t, spec_value::Ptr{Nothing})::cl_int
-    return ccall((:clSetProgramSpecializationConstant, libopencl), cl_int, (cl_program, cl_uint, Csize_t, Ptr{Nothing},), program, spec_id, spec_size, spec_value)
-end
-
 function clUnloadPlatformCompiler(platform::cl_platform_id)::cl_int
     return ccall((:clUnloadPlatformCompiler, libopencl), cl_int, (cl_platform_id,), platform)
 end
@@ -399,20 +391,12 @@ function clSetKernelArg(kernel::cl_kernel, arg_index::cl_uint, arg_size::Csize_t
     return ccall((:clSetKernelArg, libopencl), cl_int, (cl_kernel, cl_uint, Csize_t, Ptr{Nothing},), kernel, arg_index, arg_size, arg_value)
 end
 
-function clSetKernelArg(kernel::cl_kernel, arg_index::cl_uint, arg_size::Csize_t, arg_value::Ptr{Nothing})::cl_int
-    return ccall((:clSetKernelArg, libopencl), cl_int, (cl_kernel, cl_uint, Csize_t, Ptr{Nothing},), kernel, arg_index, arg_size, arg_value)
-end
-
 function clSetKernelArgSVMPointer(kernel::cl_kernel, arg_index::cl_uint, arg_value::Ptr{Nothing})::cl_int
     return ccall((:clSetKernelArgSVMPointer, libopencl), cl_int, (cl_kernel, cl_uint, Ptr{Nothing},), kernel, arg_index, arg_value)
 end
 
 function clSetKernelArgSVMPointer(kernel::cl_kernel, arg_index::cl_uint, arg_value::Ptr{Nothing})::cl_int
     return ccall((:clSetKernelArgSVMPointer, libopencl), cl_int, (cl_kernel, cl_uint, Ptr{Nothing},), kernel, arg_index, arg_value)
-end
-
-function clSetKernelExecInfo(kernel::cl_kernel, param_name::cl_kernel_exec_info, param_value_size::Csize_t, param_value::Ptr{Nothing})::cl_int
-    return ccall((:clSetKernelExecInfo, libopencl), cl_int, (cl_kernel, cl_kernel_exec_info, Csize_t, Ptr{Nothing},), kernel, param_name, param_value_size, param_value)
 end
 
 function clSetKernelExecInfo(kernel::cl_kernel, param_name::cl_kernel_exec_info, param_value_size::Csize_t, param_value::Ptr{Nothing})::cl_int
@@ -486,10 +470,6 @@ end
 
 function clSetUserEventStatus(event::cl_event, execution_status::cl_int)::cl_int
     return ccall((:clSetUserEventStatus, libopencl), cl_int, (cl_event, cl_int,), event, execution_status)
-end
-
-function clSetEventCallback(event::cl_event, command_exec_callback_type::cl_int, pfn_notify::Ptr{Nothing}, user_data::Ptr{Nothing})::cl_int
-    return ccall((:clSetEventCallback, libopencl), cl_int, (cl_event, cl_int, Ptr{Nothing}, Ptr{Nothing},), event, command_exec_callback_type, pfn_notify, user_data)
 end
 
 function clSetEventCallback(event::cl_event, command_exec_callback_type::cl_int, pfn_notify::Ptr{Nothing}, user_data::Ptr{Nothing})::cl_int
