@@ -326,10 +326,6 @@ function clSetProgramReleaseCallback(program::cl_program, pfn_notify::Ptr{Nothin
     return ccall((:clSetProgramReleaseCallback, libopencl), cl_int, (cl_program, Ptr{Nothing}, Ptr{Nothing},), program, pfn_notify, user_data)
 end
 
-function clSetProgramReleaseCallback(program::cl_program, pfn_notify::Ptr{Nothing}, user_data::Ptr{Nothing})::cl_int
-    return ccall((:clSetProgramReleaseCallback, libopencl), cl_int, (cl_program, Ptr{Nothing}, Ptr{Nothing},), program, pfn_notify, user_data)
-end
-
 function clSetProgramSpecializationConstant(program::cl_program, spec_id::cl_uint, spec_size::Csize_t, spec_value::Ptr{Nothing})::cl_int
     return ccall((:clSetProgramSpecializationConstant, libopencl), cl_int, (cl_program, cl_uint, Csize_t, Ptr{Nothing},), program, spec_id, spec_size, spec_value)
 end
@@ -389,10 +385,6 @@ end
 
 function clSetKernelArg(kernel::cl_kernel, arg_index::cl_uint, arg_size::Csize_t, arg_value::Ptr{Nothing})::cl_int
     return ccall((:clSetKernelArg, libopencl), cl_int, (cl_kernel, cl_uint, Csize_t, Ptr{Nothing},), kernel, arg_index, arg_size, arg_value)
-end
-
-function clSetKernelArgSVMPointer(kernel::cl_kernel, arg_index::cl_uint, arg_value::Ptr{Nothing})::cl_int
-    return ccall((:clSetKernelArgSVMPointer, libopencl), cl_int, (cl_kernel, cl_uint, Ptr{Nothing},), kernel, arg_index, arg_value)
 end
 
 function clSetKernelArgSVMPointer(kernel::cl_kernel, arg_index::cl_uint, arg_value::Ptr{Nothing})::cl_int
