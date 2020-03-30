@@ -247,7 +247,7 @@ function clEnqueueWriteBuffer(command_queue::cl_command_queue, buffer::cl_mem, b
     return pop!(event)
 end
 
-function clWaitForEvents(num_events::T, event_list::Array{cl_event, 1})::cl_int where {T <: Integer}
+function clWaitForEvents(num_events::T, event_list::Array{cl_event, 1})::Nothing where {T <: Integer}
     local opencl_error::cl_int = clWaitForEvents(cl_uint(num_events), event_list)
     @assert (opencl_error == CL_SUCCESS) ("clWaitForEvents() error: " * clGetErrorName(opencl_error))
     return nothing
