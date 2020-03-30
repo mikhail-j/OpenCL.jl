@@ -149,7 +149,7 @@ function clGetErrorName(e::cl_int)::String
     end
 end
 
-function clGetPlatformIDs(num_entries::T)::Array{cl_platform_id, 1}
+function clGetPlatformIDs(num_entries::T)::Array{cl_platform_id, 1} where {T <: Integer}
     local platforms::Array{cl_platform_id, 1} = fill(C_NULL, num_entries)
     local opencl_error::cl_int = clGetPlatformIDs(cl_uint(num_entries), Base.unsafe_convert(Ptr{cl_platform_id}, platforms), Ptr{cl_uint}(C_NULL))
     @assert (opencl_error == CL_SUCCESS) ("clGetPlatformIDs() error: " * clGetErrorName(opencl_error))
