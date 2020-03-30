@@ -674,7 +674,6 @@ export
     CL_COMMAND_SVM_MIGRATE_MEM,
     CL_KHRONOS_VENDOR_ID_CODEPLAY,
 
-
     # functions
     clGetPlatformIDs,
     clGetPlatformInfo,
