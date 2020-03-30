@@ -202,3 +202,11 @@ function clCreateContext(properties::Ptr{cl_context_properties}, num_devices::T,
     return context
 end
 
+function clCreateBuffer(context::cl_context, flags::cl_mem_flags, size::T, host_ptr::Ptr{Nothing})::cl_mem where {T <: Integer}
+    local opencl_error::Array{cl_int, 1} = zeros(cl_int, 1)
+
+    local mem::cl_mem = clCreateBuffer(context, flags, Csize_t(size), host_ptr, opencl_error)
+    @assert (opencl_error[1] == CL_SUCCESS) ("clCreateBuffer() error: " * clGetErrorName(opencl_error[1]))
+
+    return mem
+end
