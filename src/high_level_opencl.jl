@@ -17,7 +17,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *=#
 
-function clGetErrorName(cl_int e::cl_int)::String
+function clGetErrorName(e::cl_int)::String
     if (e == CL_SUCCESS)
         return "CL_SUCCESS"
     elseif (e == CL_DEVICE_NOT_FOUND)
