@@ -38,7 +38,7 @@ function clGetPlatformInfo(platform::cl_platform_id, param_name::cl_platform_inf
     return ccall((:clGetPlatformInfo, libopencl), cl_int, (cl_platform_id, cl_platform_info, Csize_t, Ptr{Nothing}, Ref{Csize_t},), platform, param_name, param_value_size, param_value, Base.cconvert(Ref{Csize_t}, param_value_size_ret))
 end
 
-clGetPlatformInfo(platform::cl_platform_id, param_name::cl_platform_info, param_value_size::T, param_value::Ptr{Nothing}, param_value_size_ret::Array{Csize_t, 1})::cl_int where {T <: Integer} = clGetPlatformInfo(platform, param_name, Csize_t(param_value_size), param_value, param_value_size_ret)
+clGetPlatformInfo(platform::cl_platform_id, param_name::cl_platform_info, param_value_size::T, param_value::Ptr{Nothing}, param_value_size_ret::Array{Csize_t, 1}) where {T <: Integer} = clGetPlatformInfo(platform, param_name, Csize_t(param_value_size), param_value, param_value_size_ret)
 
 function clGetPlatformInfo(platform::cl_platform_id, param_name::cl_platform_info, param_value_size::Csize_t, param_value::Ptr{Nothing}, param_value_size_ret::Ptr{Csize_t})::cl_int
     return ccall((:clGetPlatformInfo, libopencl), cl_int, (cl_platform_id, cl_platform_info, Csize_t, Ptr{Nothing}, Ptr{Csize_t},), platform, param_name, param_value_size, param_value, param_value_size_ret)
