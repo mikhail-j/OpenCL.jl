@@ -29,4 +29,6 @@ include("cl_constants.jl")
 
 include("cl_functions.jl")
 
+include("high_level_opencl.jl")
+
 end

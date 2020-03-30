@@ -786,4 +786,7 @@ export
     clGetExtensionFunctionAddress,
     clCreateCommandQueue,
     clCreateSampler,
-    clEnqueueTask
+    clEnqueueTask,
+
+    # high level OpenCL functions
+    clGetErrorName
