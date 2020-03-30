@@ -196,7 +196,7 @@ end
 function clCreateContext(properties::Ptr{cl_context_properties}, num_devices::T, devices::Array{cl_device_id, 1})::cl_context where {T <: Integer}
     local opencl_error::Array{cl_int, 1} = zeros(cl_int, 1)
 
-    local context::cl_context = clCreateContext(properties, cl_uint(num_devices), devices, NULL, NULL, opencl_error)
+    local context::cl_context = clCreateContext(properties, cl_uint(num_devices), devices, C_NULL, C_NULL, opencl_error)
     @assert (opencl_error[1] == CL_SUCCESS) ("clCreateContext() error: " * clGetErrorName(opencl_error[1]))
     
     return context
