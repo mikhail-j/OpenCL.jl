@@ -156,3 +156,39 @@ function clGetPlatformIDs(num_entries::T)::Array{cl_platform_id, 1} where {T <: 
     return platforms
 end
 
+function clGetPlatformIDs()::Array{cl_platform_id, 1} where {T <: Integer}
+    local num_entries::Array{cl_uint, 1} = zeros(cl_uint, 1)
+
+    # get number of OpenCL platforms
+    local opencl_error::cl_int = clGetPlatformIDs(cl_uint(0), Ptr{cl_platform_id}(C_NULL), num_entries)
+    @assert (opencl_error == CL_SUCCESS) ("clGetPlatformIDs() error: " * clGetErrorName(opencl_error))
+
+    # initialize Array{cl_platform_id} and return resulting Array
+    local platforms::Array{cl_platform_id, 1} = fill(C_NULL, num_entries[1])
+    opencl_error = clGetPlatformIDs(pop!(num_entries), Base.unsafe_convert(Ptr{cl_platform_id}, platforms), Ptr{cl_uint}(C_NULL))
+    @assert (opencl_error == CL_SUCCESS) ("clGetPlatformIDs() error: " * clGetErrorName(opencl_error))
+
+    return platforms
+end
+
+function clGetDeviceIDs(platform::cl_platform_id, device_type::cl_device_type, num_entries::T)::Array{cl_device_id, 1} where {T <: Integer}
+    local devices::Array{cl_device_id, 1} = fill(C_NULL, num_entries)
+    local opencl_error::cl_int = clGetDeviceIDs(platform, device_type, cl_uint(num_entries), Base.unsafe_convert(Ptr{cl_device_id}, devices), Ptr{cl_uint}(C_NULL))
+    @assert (opencl_error == CL_SUCCESS) ("clGetDeviceIDs() error: " * clGetErrorName(opencl_error))
+    return devices
+end
+
+function clGetDeviceIDs(platform::cl_platform_id, device_type::cl_device_type)::Array{cl_device_id, 1} where {T <: Integer}
+    local num_entries::Array{cl_uint, 1} = zeros(cl_uint, 1)
+    
+    # get number of OpenCL devices in the given OpenCL platform
+    local opencl_error::cl_int = clGetDeviceIDs(platform, device_type, cl_uint(0), Ptr{cl_device_id}(C_NULL), Base.unsafe_convert(Ptr{cl_uint}, num_entries))
+    @assert (opencl_error == CL_SUCCESS) ("clGetDeviceIDs() error: " * clGetErrorName(opencl_error))
+
+    # initialize Array{cl_device_id} and return resulting Array
+    local devices::Array{cl_device_id, 1} = fill(C_NULL, num_entries[1])
+    opencl_error = clGetDeviceIDs(platform, device_type, pop!(num_entries), Base.unsafe_convert(Ptr{cl_device_id}, devices), Ptr{cl_uint}(C_NULL))
+    @assert (opencl_error == CL_SUCCESS) ("clGetDeviceIDs() error: " * clGetErrorName(opencl_error))
+    
+    return devices
+end
