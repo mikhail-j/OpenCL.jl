@@ -210,3 +210,21 @@ function clCreateBuffer(context::cl_context, flags::cl_mem_flags, size::T, host_
 
     return mem
 end
+
+function clCreateCommandQueueWithProperties(context::cl_context, device::cl_device_id, properties::Ptr{cl_queue_properties})::cl_command_queue
+    local opencl_error::Array{cl_int, 1} = zeros(cl_int, 1)
+
+    local queue::cl_command_queue = clCreateCommandQueueWithProperties(context, device, properties, Base.unsafe_convert(Ptr{cl_int}, opencl_error))
+    @assert (opencl_error[1] == CL_SUCCESS) ("clCreateCommandQueueWithProperties() error: " * clGetErrorName(opencl_error[1]))
+
+    return queue
+end
+
+function clCreateCommandQueue(context::cl_context, device::cl_device_id, properties::T)::cl_command_queue where {T <: Integer}
+    local opencl_error::Array{cl_int, 1} = zeros(cl_int, 1)
+
+    local queue::cl_command_queue = clCreateCommandQueue(context, device, cl_command_queue_properties(properties), opencl_error)
+    @assert (opencl_error[1] == CL_SUCCESS) ("clCreateCommandQueue() error: " * clGetErrorName(opencl_error[1]))
+
+    return queue
+end
