@@ -103,6 +103,10 @@ function clCreateContext(properties::Array{cl_context_properties, 1}, num_device
     return ccall((:clCreateContext, libopencl), cl_context, (Ref{cl_context_properties}, cl_uint, Ref{cl_device_id}, Ptr{Nothing}, Ptr{Nothing}, Ref{cl_int},), Base.cconvert(Ref{cl_context_properties}, properties), num_devices, Base.cconvert(Ref{cl_device_id}, devices), pfn_notify, user_data, Base.cconvert(Ref{cl_int}, errcode_ret))
 end
 
+function clCreateContext(properties::Ptr{cl_context_properties}, num_devices::cl_uint, devices::Array{cl_device_id, 1}, pfn_notify::Ptr{Nothing}, user_data::Ptr{Nothing}, errcode_ret::Array{cl_int, 1})::cl_context
+    return ccall((:clCreateContext, libopencl), cl_context, (Ptr{cl_context_properties}, cl_uint, Ref{cl_device_id}, Ptr{Nothing}, Ptr{Nothing}, Ref{cl_int},), properties, num_devices, Base.cconvert(Ref{cl_device_id}, devices), pfn_notify, user_data, Base.cconvert(Ref{cl_int}, errcode_ret))
+end
+
 function clCreateContext(properties::Ptr{cl_context_properties}, num_devices::cl_uint, devices::Ptr{cl_device_id}, pfn_notify::Ptr{Nothing}, user_data::Ptr{Nothing}, errcode_ret::Ptr{cl_int})::cl_context
     return ccall((:clCreateContext, libopencl), cl_context, (Ptr{cl_context_properties}, cl_uint, Ptr{cl_device_id}, Ptr{Nothing}, Ptr{Nothing}, Ptr{cl_int},), properties, num_devices, devices, pfn_notify, user_data, errcode_ret)
 end
