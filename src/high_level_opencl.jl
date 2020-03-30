@@ -228,3 +228,27 @@ function clCreateCommandQueue(context::cl_context, device::cl_device_id, propert
 
     return queue
 end
+
+function clEnqueueReadBuffer(command_queue::cl_command_queue, buffer::cl_mem, blocking_read::cl_bool, offset::Integer, size::Integer, ptr::Array{T, 1})::cl_event where {T <: Number}
+    local event::cl_event = fill(cl_event(C_NULL), 1)
+
+    local opencl_error::cl_int = clEnqueueReadBuffer(command_queue, buffer, blocking_read, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), event)
+    @assert (opencl_error == CL_SUCCESS) ("clEnqueueReadBuffer() error: " * clGetErrorName(opencl_error))
+    
+    return pop!(event)
+end
+
+function clEnqueueWriteBuffer(command_queue::cl_command_queue, buffer::cl_mem, blocking_write::cl_bool, offset::Integer, size::Integer, ptr::Array{T, 1})::cl_event where {T <: Number}
+    local event::cl_event = fill(cl_event(C_NULL), 1)
+
+    local opencl_error::cl_int = clEnqueueWriteBuffer(command_queue, buffer, blocking_write, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), event)
+    @assert (opencl_error == CL_SUCCESS) ("clEnqueueWriteBuffer() error: " * clGetErrorName(opencl_error))
+    
+    return pop!(event)
+end
+
+function clWaitForEvents(num_events::T, event_list::Array{cl_event, 1})::cl_int where {T <: Integer}
+    local opencl_error::cl_int = clWaitForEvents(cl_uint(num_events), event_list)
+    @assert (opencl_error == CL_SUCCESS) ("clWaitForEvents() error: " * clGetErrorName(opencl_error))
+    return nothing
+end
