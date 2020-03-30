@@ -230,7 +230,7 @@ function clCreateCommandQueue(context::cl_context, device::cl_device_id, propert
 end
 
 function clEnqueueReadBuffer(command_queue::cl_command_queue, buffer::cl_mem, blocking_read::cl_bool, offset::Integer, size::Integer, ptr::Array{T, 1})::cl_event where {T <: Number}
-    local event::cl_event = fill(cl_event(C_NULL), 1)
+    local event::Array{cl_event, 1} = fill(cl_event(C_NULL), 1)
 
     local opencl_error::cl_int = clEnqueueReadBuffer(command_queue, buffer, blocking_read, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), event)
     @assert (opencl_error == CL_SUCCESS) ("clEnqueueReadBuffer() error: " * clGetErrorName(opencl_error))
@@ -239,7 +239,7 @@ function clEnqueueReadBuffer(command_queue::cl_command_queue, buffer::cl_mem, bl
 end
 
 function clEnqueueWriteBuffer(command_queue::cl_command_queue, buffer::cl_mem, blocking_write::cl_bool, offset::Integer, size::Integer, ptr::Array{T, 1})::cl_event where {T <: Number}
-    local event::cl_event = fill(cl_event(C_NULL), 1)
+    local event::Array{cl_event, 1} = fill(cl_event(C_NULL), 1)
 
     local opencl_error::cl_int = clEnqueueWriteBuffer(command_queue, buffer, blocking_write, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), event)
     @assert (opencl_error == CL_SUCCESS) ("clEnqueueWriteBuffer() error: " * clGetErrorName(opencl_error))
