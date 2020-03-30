@@ -232,7 +232,7 @@ end
 function clEnqueueReadBuffer(command_queue::cl_command_queue, buffer::cl_mem, blocking_read::cl_bool, offset::Integer, size::Integer, ptr::Array{T, 1})::cl_event where {T <: Number}
     local event::Array{cl_event, 1} = fill(cl_event(C_NULL), 1)
 
-    local opencl_error::cl_int = clEnqueueReadBuffer(command_queue, buffer, blocking_read, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), event)
+    local opencl_error::cl_int = clEnqueueReadBuffer(command_queue, buffer, blocking_read, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), Base.unsafe_convert(Ptr{cl_event}, event))
     @assert (opencl_error == CL_SUCCESS) ("clEnqueueReadBuffer() error: " * clGetErrorName(opencl_error))
     
     return pop!(event)
@@ -241,7 +241,7 @@ end
 function clEnqueueWriteBuffer(command_queue::cl_command_queue, buffer::cl_mem, blocking_write::cl_bool, offset::Integer, size::Integer, ptr::Array{T, 1})::cl_event where {T <: Number}
     local event::Array{cl_event, 1} = fill(cl_event(C_NULL), 1)
 
-    local opencl_error::cl_int = clEnqueueWriteBuffer(command_queue, buffer, blocking_write, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), event)
+    local opencl_error::cl_int = clEnqueueWriteBuffer(command_queue, buffer, blocking_write, Csize_t(offset), Csize_t(size), Base.unsafe_convert(Ptr{Nothing}, ptr), cl_uint(0), Ptr{cl_event}(C_NULL), Base.unsafe_convert(Ptr{cl_event}, event))
     @assert (opencl_error == CL_SUCCESS) ("clEnqueueWriteBuffer() error: " * clGetErrorName(opencl_error))
     
     return pop!(event)
